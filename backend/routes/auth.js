@@ -1,5 +1,5 @@
 const express = require('express');
-const { body, validationResult } = require('express-validator'); //used to check the validity of input given by user
+const { body, validationResult } = require('express-validator'); //used to check the validity of input auth details given by user
 const router = express.Router();
 const User = require('../modules/User');
 const bcrypt = require('bcrypt'); //For hashing ans salting of passwords
@@ -27,11 +27,11 @@ router.post('/createUser', [
             return res.status(400).json({ error: 'This email id already exists. Please enter a unique email id' })
         }
 
-        // Hahing ans Salting of password
+        // Hashing ans Salting of password
         const salt = await bcrypt.genSalt(10);
         const securePassword = await bcrypt.hash(req.body.password, salt);
         
-        //Creating user with unique email id
+        //Creating a new user with unique email id and secure password
         user = await User.create({
             name: req.body.name,
             email: req.body.email,
