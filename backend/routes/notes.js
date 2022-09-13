@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
-// const jwt = require('jsonwebtoken'); //Used for giving a token for login to the user
 const fetchuser = require('../middleware/fetchuser');
 const Notes = require('../modules/Notes');
 const { body, validationResult } = require('express-validator'); //used to check the validity of input note given by user
 
 
-// ROUTE 1: Getting the details of logged-in user using: GET "/api/notes/fetchallnotes" - Login required
+// ROUTE 1: Getting the details/notes of loggedin-user using: GET "/api/notes/fetchallnotes" - Login required
 router.get('/fetchallnotes', fetchuser, async (req, res) => {
     try {
         const notes = await Notes.find({ user: req.user.id });
@@ -20,26 +19,26 @@ router.get('/fetchallnotes', fetchuser, async (req, res) => {
 // ROUTE 2: Adding a new note using: POST "/api/notes/addnote" - Login required
 router.post('/addnote', fetchuser, [
     body('title', 'Title must be atleast 3 characters long.').isLength({ min: 3 }),
-    body('description', 'Description must be atleast 5 characters long.').isLength({ min: 5 })
+    body('description', 'Description must be atleast 5 characters long.').isLength({ min: 5 }),
 ], async (req, res) => {
 
-    //Checking errors, if error occurs, it returns a bad request with an error message
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-
+    
     try {
+        //Checking errors, if error occurs, it returns a bad request with an error message
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
         const {title, description, tag} = req.body;
         const note = new Notes({
-            title: title,
-            description: description,
-            tag: tag,
+            title,
+            description,
+            tag,
             user: req.user.id
         });
-        console.log(note.user.toString());
+        // console.log(note.user.toString());
         const savedNote = await note.save();
-        res.json({savedNote});
+        res.json(savedNote);
 
     } catch (error) {
         console.log(error.message);
@@ -54,9 +53,9 @@ router.put('/updatenote/:id', fetchuser, async (req, res) => {
         const {title, description, tag} = req.body;
         // Create a new Note object
         const newNote = {};
-        if(title) newNote.title = title;
-        if(description) newNote.description = description;
-        if(tag) newNote.tag = tag;
+        if(title) {newNote.title = title};
+        if(description) {newNote.description = description};
+        if(tag) {newNote.tag = tag};
 
         // Find the note to be updated and Upadate it
         let note = await Notes.findById(req.params.id);
