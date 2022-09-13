@@ -32,6 +32,7 @@ const Signup = (props) => {
 
   return (
     <div>
+    <h2>Create an account</h2>
     <form onSubmit={handleSubmit}>
     <div className="mb-3">
             <label htmlFor="name" className="form-label">Name</label>

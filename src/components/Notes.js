@@ -19,7 +19,7 @@ const Notes = (props) => {
         }
         else{
             history("/login");
-            props.showAlert("Login to go to home page", "danger");
+            props.showAlert("Login to continue to iNotebook", "warning");
         }
     }, []);
 
