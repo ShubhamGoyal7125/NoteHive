@@ -5,7 +5,7 @@ const User = require('../modules/User');
 const bcrypt = require('bcrypt'); //For hashing ans salting of passwords
 const jwt = require('jsonwebtoken'); //Used for giving a token for login to the user
 const fetchuser = require('../middleware/fetchuser');
-const JWT_SECRET = "shubhamisa@1greatboy";
+const JWT_SECRET = require("../../config/keys").JWT_SECRET;
 
 let success = false;
 // ROUTE 1: Creating a new user using: POST "/api/auth/createUser" - No Login required

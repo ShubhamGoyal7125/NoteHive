@@ -9,8 +9,18 @@ app.use(express.json());
 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/notes', require('./routes/notes'));
+ 
 
-
+const path = require("path");
+// console.log("Path: " + path.resolve(__dirname, "../build"));
+if(process.env.NODE_ENV == 'production'){
+    
+    app.get("/", (req, res)=>{
+        
+        app.use(express.static(path.resolve(__dirname, "../build")));
+        res.sendFile(path.resolve(__dirname, "../build", "index.html"));
+    })
+}
 
 app.listen(port, ()=>{
     console.log("Server is running at port 5000!");
